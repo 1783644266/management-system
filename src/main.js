@@ -16,7 +16,7 @@ import { Button, Input, Form, FormItem, Message,
 Container, Header, Aside, Main, Menu, Submenu, MenuItem,
 MenuItemGroup, Breadcrumb, BreadcrumbItem, Card,
 Row, Col, Table, TableColumn, Switch, Tooltip, Pagination,
-Dialog, MessageBox} from 'element-ui'
+Dialog, MessageBox, Tag, Tree, Select, Option} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Input)
@@ -41,11 +41,16 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
 
 Vue.prototype.$message = Message
 Vue.prototype.$messageBox = MessageBox
 
-axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
+// axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
+axios.defaults.baseURL = 'http://www.ysqorz.top:8888/api/private/v1/'
 
 axios.interceptors.request.use( config => {
   config.headers.Authorization = window.sessionStorage.getItem('token')
