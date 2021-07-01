@@ -11,7 +11,7 @@
       >
       <el-table :data="rolesList" style="width: 100%" stripe border>
         <el-table-column type="expand">
-          <template v-slot="scope">
+          <template v-slot="scope" >
             <el-row
               :class="[
                 'bottom-border',
@@ -20,25 +20,26 @@
               ]"
               v-for="(item1, index) in scope.row.children"
               :key="item1.id"
+              v-if="item1.children.length"
             >
               <!-- 一级权限 -->
               <el-col :span="6">
-                <el-tag closable @close="removeRight(scope.row, item1.id)">{{
-                  item1.authName
-                }}</el-tag>
+                <el-tag closable @close="removeRight(scope.row, item1.id)" >
+                  {{item1.authName}}</el-tag>
               </el-col>
               <el-col :span="18">
                 <el-row
                   :class="[index !== 0 ? 'top-border' : '', 'ycenter']"
                   v-for="(item2, index) in item1.children"
                   :key="item2.id"
+                  v-if="item2.children.length"
                 >
                   <el-col :span="6">
                     <el-tag
                       closable
                       type="success"
                       @close="removeRight(scope.row, item2.id)"
-                      >{{ item2.authName }}</el-tag
+                      >{{item2.authName}}</el-tag
                     >
                     <!-- 二级权限 -->
                   </el-col>
@@ -57,6 +58,7 @@
               </el-col>
             </el-row>
           </template>
+
         </el-table-column>
         <el-table-column label="#" type="index"> </el-table-column>
         <el-table-column label="角色名称" prop="roleName"> </el-table-column>
@@ -236,7 +238,7 @@ export default {
         const { data } = await this.$http.delete(
           `roles/${role.id}/rights/${right}`
         );
-        console.log(data);
+        console.log(data.data);
         if (data.meta.status !== 200)
           return this.$message.error("取消权限失败");
         this.$message.success(data.meta.msg);
