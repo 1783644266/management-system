@@ -5,6 +5,11 @@ html, body ,#app {
 .el-cascader-menu { 
   height: 190px; 
 }
-.el-scrollbar__wrap {
-  overflow-x: hidden;
+.el-cascader-panel .el-cascader-menu__wrap {
+  height: 204px;
+  /* overflow-x: hidden; */
 }
+.ql-editor {
+  height: 300px !important;
+}
+

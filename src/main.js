@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 
 import axios from 'axios'
+import VueQuillEditor from 'vue-quill-editor'
 
 //引入重置css
 import './assets/css/reset.css'
@@ -12,14 +12,20 @@ import './assets/css/base.css'
 //引入iconfont
 import 'assets/iconfont/iconfont.css'
 import ZkTable from 'vue-table-with-tree-grid'
+import moment from 'moment'; 
+import 'quill/dist/quill.core'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 Vue.component('vue-tree', ZkTable)
+Vue.use(VueQuillEditor)
+
 import { Button, Input, Form, FormItem, Message,
 Container, Header, Aside, Main, Menu, Submenu, MenuItem,
 MenuItemGroup, Breadcrumb, BreadcrumbItem, Card,
 Row, Col, Table, TableColumn, Switch, Tooltip, Pagination,
 Dialog, MessageBox, Tag, Tree, Select, Option, Cascader, Alert,
-Tabs, TabPane} from 'element-ui'
+Tabs, TabPane, Steps, Step, CheckboxGroup, Checkbox, Upload} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Input)
@@ -52,6 +58,11 @@ Vue.use(Cascader)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
+Vue.use(Upload)
 
 Vue.prototype.$message = Message
 Vue.prototype.$messageBox = MessageBox
@@ -66,12 +77,12 @@ axios.interceptors.request.use( config => {
 
 Vue.prototype.$http = axios
 
-
-
 Vue.config.productionTip = false
 
+Vue.filter('dateFormat', function(value){
+  return moment(value).format("YYYY-MM-DD HH:mm:ss ");
+})
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

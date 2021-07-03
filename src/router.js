@@ -9,6 +9,8 @@ import Rights from './views/rights/rights.vue';
 import Roles from './views/roles/roles.vue'
 import Categories from './views/commodity/categories.vue'
 import Params from './views/params/params.vue'
+import GoodList from './views/goodList/goodList.vue'
+import AddGood from './views/add/addGood.vue';
 
 Vue.use(Router)
 
@@ -54,6 +56,14 @@ const router = new Router({
         path: '/params',
         component: Params
       },
+      {
+        path: '/goods',
+        component: GoodList,
+      },
+      {
+        path: '/goods/add',
+        component: AddGood
+      }
     ]
   },
   ]
