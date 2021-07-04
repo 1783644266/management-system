@@ -11,6 +11,8 @@ import Categories from './views/commodity/categories.vue'
 import Params from './views/params/params.vue'
 import GoodList from './views/goodList/goodList.vue'
 import AddGood from './views/add/addGood.vue';
+import Orders from './views/orders/Orders.vue';
+import Reports from './views/reports/reports.vue';
 
 Vue.use(Router)
 
@@ -63,6 +65,14 @@ const router = new Router({
       {
         path: '/goods/add',
         component: AddGood
+      },
+      {
+        path: '/orders',
+        component: Orders
+      },
+      {
+        path: '/reports',
+        component: Reports
       }
     ]
   },

@@ -47,7 +47,7 @@
         <el-table-column
           label="操作">
           <template v-slot="scope">
-            <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
+            <el-button size="mini" type="primary" icon="el-icon-edit" @click="editGoodInfo(scope.row)"></el-button>
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteGood(scope.row)"></el-button>
           </template>
         </el-table-column>
@@ -62,6 +62,31 @@
         :total="total"
         background>
       </el-pagination>
+      <el-dialog
+        title="商品编辑"
+        :visible.sync="editGoodDialog"
+        width="50%"
+        @close="editGoodDialogClose"
+        >
+        <el-form :model="editGood" :rules="editGoodRules" ref="editGoodRef">
+          <el-form-item label="商品名称" prop="goods_name">
+            <el-input v-model="editGood.goods_name" ></el-input>
+          </el-form-item>
+          <el-form-item label="商品价格" prop="goods_price">
+            <el-input v-model="editGood.goods_price" type="number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量" prop="goods_number">
+            <el-input v-model="editGood.goods_number" type="number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品重量" prop="goods_weight">
+            <el-input v-model="editGood.goods_weight" type="number"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editGoodDialog = false">取 消</el-button>
+          <el-button type="primary" @click="changeGoodInfo">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -72,6 +97,18 @@ export default {
     this.getGoods()
   },
   data() {
+    var checkPrice = (rule, value, callback) => {
+      if(value == 0) return callback(new Error("价格不能为零"))
+      callback()
+    }
+    var checkNumber = (rule, value, callback) => {
+      if(value == 0) return callback(new Error("数量不能为零"))
+      callback()
+    }
+    var checkWeight = (rule, value, callback) => {
+      if(value == 0) return callback(new Error("重量不能为零"))
+      callback()
+    }
     return {
       search: '',//搜索关键字
       goodList: [],
@@ -81,6 +118,18 @@ export default {
         query: ''
       },
       total: 0,
+      editGoodDialog: false,//编辑商品对话框
+      editGood: {
+      },//
+      editGoodRules: {
+        goods_name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '请输入活动名称', trigger: 'blur' },
+        {validator: checkPrice, trigger: 'blur'}],
+        goods_number: [{ required: true, message: '请输入活动名称', trigger: 'blur' },
+        {validator: checkPrice, trigger: 'blur'}],
+        goods_weight: [{ required: true, message: '请输入活动名称', trigger: 'blur' },
+        {validator: checkPrice, trigger: 'blur'}],
+      },//编辑商品表单验证规则
     }
   },
   methods: {
@@ -116,7 +165,27 @@ export default {
         this.getGoods()
       })
       .catch(err => this.$message("删除操作已取消"))
-    }
+    },
+    editGoodInfo(info) {
+      console.log(info)
+      info.goods_cat = "1,3,6"
+      this.editGood = info
+      this.editGoodDialog = true
+    },//开始编辑商品对话框
+    editGoodDialogClose() {
+      this.$refs.editGoodRef.resetFields()
+    },//对话框关闭，重置表单
+    changeGoodInfo() {
+      this.$refs.editGoodRef.validate(async ok => {
+        if(!ok) return this.$message.error("请填写必要参数")
+        const {data} = await this.$http.put(`goods/${this.editGood.goods_id}`,this.editGood)
+        console.log(data)
+        if(data.meta.status !== 200 ) return this.$message.error("编辑信息失败")
+        this.$message.success("商品信息更改成功")
+        this.editGoodDialog = false
+        this.getGoods()
+      })
+    },//put请求
   },
 }
 </script>
